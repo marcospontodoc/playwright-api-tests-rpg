@@ -18,6 +18,10 @@
   "homepage": "https://github.com/marcospontodoc/playwright-api-tests-rpg#readme",
   "devDependencies": {
     "@playwright/test": "^1.63.0",
-    "@types/node": "^26.5.0"
+    "@types/node": "^26.5.0",
+    "@types/pg": "^8.23.1"
+  },
+  "dependencies": {
+    "pg": "^8.23.0"
   }
 }
