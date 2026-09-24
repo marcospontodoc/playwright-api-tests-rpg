@@ -70,3 +70,61 @@ test("should not create a character with empty name", async ({
 
     expect(result.rowCount).toBe(0);
 });
+
+
+test("should not create a character with invalid level", async ({
+    characterApi,
+    database,
+    testData
+}) => {
+
+    const character = new CharacterBuilder()
+        .withPlayer(testData.playerId)
+        .withClass(testData.classId)
+        .withLevel(0)
+        .build();
+
+    const response = await characterApi.create(character);
+
+    expect(response.status()).toBe(400);
+
+    const result = await database.query(
+        `
+        SELECT *
+        FROM character
+        WHERE id_player = $1
+        AND name = $2
+        `,
+        [testData.playerId, character.name]
+    );
+
+    expect(result.rowCount).toBe(0);
+});
+
+test("should not create a character with invalid id_class", async ({
+    characterApi,
+    database,
+    testData
+}) => {
+
+    const character = new CharacterBuilder()
+        .withPlayer(testData.playerId)
+        .withClass("invalid" as any)
+        .build();
+
+    const response = await characterApi.create(character);
+
+    expect(response.status()).toBe(400);
+
+    const result = await database.query(
+        `
+        SELECT *
+        FROM character
+        WHERE id_player = $1
+        AND name = $2
+        `,
+        [testData.playerId, character.name]
+    );
+
+    expect(result.rowCount).toBe(0);
+});
